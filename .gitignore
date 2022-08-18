@@ -128,3 +128,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Códigos particulares
+codigos_propios/
+codigos_propios

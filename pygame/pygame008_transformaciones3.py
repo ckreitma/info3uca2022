@@ -35,22 +35,14 @@ if __name__ == '__main__':
     canvas = pygame.display.set_mode((600, 600))
 
     # TITLE OF CANVAS
-    pygame.display.set_caption("UCA Transformaciones")
+    pygame.display.set_caption("Rotación a través de un punto")
 
     exit = False
     lista_puntos = ((10,20),(250,250),(100,300),(150,200),(10,20))
 
 
-    # Matriz de escala
-    escalar = [[0.3,0,0],
-               [0, 0.3, 0],
-               [0,0,1]
-               ]
-
-    lista_puntos1=transformar(lista_puntos,escalar)
-
     # Matriz de rotación
-    angulo = 0.25
+    angulo = 0.45
     rotacion = [[math.cos(angulo),math.sin(angulo),0],
                 [-1*math.sin(angulo),math.cos(angulo),0],
                 [0,0,1]]
@@ -58,16 +50,15 @@ if __name__ == '__main__':
     lista_puntos2=transformar(lista_puntos,rotacion)
 
     # Matriz de traslación.
-    traslacion = [[1,0,0],
+    traslacion1 = [[1,0,0],
                   [0,1,0],
-                  [200,10,1]]
-    lista_puntos3=transformar(lista_puntos,traslacion)
+                  [-300,-300,1]]
 
     # Combinacion.
     traslacion2 = [[1,0,0],
                   [0,1,0],
-                  [300,100,1]]
-    lista_puntos4=transformar(lista_puntos,np.matmul(np.matmul(np.matmul(rotacion,rotacion),escalar),traslacion2))
+                  [300,300,1]]
+    lista_puntos4=transformar(lista_puntos,np.matmul(np.matmul(traslacion1,rotacion),traslacion2))
 
 
     while not exit:

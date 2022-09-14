@@ -29,9 +29,9 @@ edges = (
     (5, 7)
 )
 
-
-def Cube():
+def inicializar():
     # Borrar la pantalla
+    glClearColor(1, 1, 1, 1)
     glClear(GL_COLOR_BUFFER_BIT)
 
     # Selecciona la matriz de proyección
@@ -50,14 +50,39 @@ def Cube():
     glTranslatef(0.0, 0.0, -5.0)
 
     # Ángulo,
-    glRotatef(45, 1, 0.3, 0.1)
+    glRotatef(10, 0.2, 0.2, 0)
+
+def ejes():
+    # Eje x
     glBegin(GL_LINES)
+    glColor3f(1, 0, 0)
+    glVertex3f(0,0,0)
+    glVertex3f(1,0,0)
+
+    glColor3f(0, 1, 0)
+    glVertex3f(0,0,0)
+    glVertex3f(0,1,0)
+
+    glColor3f(0, 0, 1)
+    glVertex3f(0,0,0)
+    glVertex3f(0,0,1)
+
+    glEnd()
+
+def cubo():
+    glBegin(GL_LINES)
+    glColor3f(0, 0, 0)
     for edge in edges:
         for vertex in edge:
             glVertex3fv(vertices[vertex])
     glEnd()
-    glFlush()
 
+
+def actualizar():
+    inicializar()
+    ejes()
+    cubo()
+    glFlush()
 
 def main():
     glutInit(sys.argv)
@@ -65,7 +90,7 @@ def main():
     glutInitWindowSize(altura, ancho)
     glutInitWindowPosition(0, 0)
     glutCreateWindow("Cubo 3D sencillo con líneas")
-    glutDisplayFunc(Cube)
+    glutDisplayFunc(actualizar)
     glutMainLoop()
 
 

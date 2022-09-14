@@ -2,8 +2,7 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
 
-altura,ancho = 800,800
-vertices = (
+verticies = (
     (1, -1, -1),
     (1, 1, -1),
     (-1, 1, -1),
@@ -39,7 +38,7 @@ def Cube():
     glLoadIdentity()  # Inicializar la matriz.
 
     # Ángulo, ratio, near, far
-    gluPerspective(45, altura/ancho, 0.1, 50.0)
+    gluPerspective(45, 600/600, 0.1, 50.0)
 
     # Seleccionar la matriz modelview
     glMatrixMode(GL_MODELVIEW)
@@ -54,7 +53,7 @@ def Cube():
     glBegin(GL_LINES)
     for edge in edges:
         for vertex in edge:
-            glVertex3fv(vertices[vertex])
+            glVertex3fv(verticies[vertex])
     glEnd()
     glFlush()
 
@@ -62,9 +61,9 @@ def Cube():
 def main():
     glutInit(sys.argv)
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB)
-    glutInitWindowSize(altura, ancho)
+    glutInitWindowSize(600, 600)
     glutInitWindowPosition(0, 0)
-    glutCreateWindow("Cubo 3D sencillo con líneas")
+    glutCreateWindow(u'Cubo 3D sencillo con lineas')
     glutDisplayFunc(Cube)
     glutMainLoop()
 

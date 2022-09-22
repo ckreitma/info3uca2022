@@ -1,5 +1,6 @@
 # https://codeloop.org/python-opengl-programming-drawing-teapot/
 from OpenGL.GL import *
+from OpenGL.GLU import *
 from OpenGL.GLUT import *
 
 
@@ -8,9 +9,13 @@ def draw():
     glMatrixMode(GL_PROJECTION)  # Apunta a la matriz de proyección
     glLoadIdentity()
     # Matriz de proyección ortogonal
-    glOrtho(-1, 1, -1, 1, -1, 1)
+    #glOrtho(-1, 1, -1, 1, -1, 0)
+
+    # Ángulo, ratio, near, far
+    gluPerspective(60, 600/600, 0, 10)
     glMatrixMode(GL_MODELVIEW)
-    glutWireTeapot(0.2)
+    glTranslatef(-1.0, 0.0, -1.0)
+    glutWireTeapot(0.6)
     #glutTeapot(0.6)
     glFlush()
 

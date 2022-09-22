@@ -38,9 +38,9 @@ def Cube():
     glLoadIdentity()  # Inicializar la matriz.
 
     # Ángulo, ratio, near, far
-    #gluPerspective(45, 600/600, 0.1, 50.0)
+    gluPerspective(45, 600/600, 0.1, 50.0)
     # Matriz de proyección ortogonal
-    glOrtho( -10, 10, -10, 10, -10, 10)
+    #glOrtho( -10, 10, -10, 10, -10, 10)
 
     # Seleccionar la matriz modelview
     glMatrixMode(GL_MODELVIEW)
@@ -51,7 +51,7 @@ def Cube():
     glTranslatef(0.0, 0.0, -5.0)
 
     # Ángulo,
-    glRotatef(45, 1, 0.3, 0.1)
+    #glRotatef(45, 1, 0.3, 0.1)
     glBegin(GL_LINES)
     for edge in edges:
         for vertex in edge:

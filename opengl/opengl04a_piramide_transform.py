@@ -61,6 +61,10 @@ def inicializar():
     # Ángulo, ratio, near, far
     gluPerspective(45, 600/600, 0.1, 50.0)
 
+    # Matriz de proyección ortogonal
+    #glOrtho(-1, 1, -1, 1, -1, 1)
+
+
     # Seleccionar la matriz modelview
     glMatrixMode(GL_MODELVIEW)
 

@@ -8,7 +8,7 @@ ancho_pantalla, alto_pantalla = 1000,1000
 
 # Rotación del eje.
 # Rotar 30 grados alrededor de la linea (0.1,0.2,0)
-rotacion_base = [30, -0.1, 0.1, 0]
+rotacion_base = [0, 0.1, 0.2, 0]
 
 vertices = (
     (-0.5, -0.5, 0.5),
@@ -39,7 +39,7 @@ def inicializar():
     # Ángulo, ratio, near, far
     gluPerspective(60, 600/600, 0.1, 50)
     #glTranslatef(0.0, 0.0, -2.0)
-    gluLookAt(0,0,5,0,0,0,0,1,0)
+    gluLookAt(0,0,3,0,0,0,0,1,0)
 
     #glOrtho(-1,1,-1,1,-1,1)
 
@@ -48,12 +48,14 @@ def inicializar():
     glMatrixMode(GL_MODELVIEW)
 
     # Borrar la pantalla
-    glClearColor(1, 1, 1, 1)
+    glClearColor(0,0,0, 1)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     glClearDepth(1.0)
     glDepthFunc(GL_LESS)
     glEnable(GL_DEPTH_TEST)
     glShadeModel(GL_SMOOTH)
+    glEnable(GL_BLEND)
+    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA)
 
 def ejes():
     #glPushMatrix()
@@ -80,7 +82,7 @@ def ejes():
     #glPopMatrix()
 
 def square(r,g,b):
-    glColor3f(r,g,b)
+    glColor4f(r,g,b,0.6)
     glBegin(GL_TRIANGLE_FAN)
     glVertex3fv(vertices[0])
     glVertex3fv(vertices[1])
@@ -101,18 +103,23 @@ def cubo(size):
     # 2a cara = Derecha
     glPushMatrix()
     glScalef(size,size,size)
-    glRotatef(90,0,1,0)
+    glRotatef(45,1,0,0)
+    glRotatef(45,1,0,0)
+    glRotatef(20,0,1,0)
     square(0.8,1,0.8)
     glPopMatrix()
 
 
+    return
     # 3a cara = Arriba
-    glPushMatrix()
-    glScalef(size,size,size)
+    #glPushMatrix()
+    #glScalef(size,size,size)
     glRotatef(-90,1,0,0)
-    square(0.8,0.8,1)
-    glPopMatrix()
+    glRotatef(-90,1,0,0)
+    #square(0.8,0.8,1)
+    #glPopMatrix()
 
+    return
     # 3a cara = Atras
     glPushMatrix()
     glScalef(size,size,size)
@@ -121,6 +128,7 @@ def cubo(size):
     glPopMatrix()
 
     glPopMatrix()
+
 def display():
     inicializar()
     ejes()

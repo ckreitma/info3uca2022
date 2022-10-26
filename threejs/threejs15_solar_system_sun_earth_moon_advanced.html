@@ -23,11 +23,54 @@
   </body>
 <script type="module">
 import * as THREE from './threejs/three.module.js';
+import GUI from './threejs/addons/lil-gui.js';
+import {OrbitControls} from './threejs/addons/OrbitControls.js'
+
+class AxisGridHelper {
+  constructor(node, units = 10) {
+    const axes = new THREE.AxesHelper();
+    axes.material.depthTest = false;
+    axes.renderOrder = 2;  // after the grid
+    node.add(axes);
+ 
+    const grid = new THREE.GridHelper(units, units);
+    grid.material.depthTest = false;
+    grid.renderOrder = 1;
+    node.add(grid);
+ 
+    this.grid = grid;
+    this.axes = axes;
+    this.visible = false;
+  }
+  get visible() {
+    return this._visible;
+  }
+  set visible(v) {
+    this._visible = v;
+    this.grid.visible = v;
+    this.axes.visible = v;
+  }
+}
+
+class ColorGUIHelper {
+  constructor(object, prop) {
+    this.object = object;
+    this.prop = prop;
+  }
+  get value() {
+    return `#${this.object[this.prop].getHexString()}`;
+  }
+  set value(hexString) {
+    this.object[this.prop].set(hexString);
+  }
+}
+
 
 function main() {
   const canvas = document.querySelector('#c');
   const renderer = new THREE.WebGLRenderer({canvas});
   const scene = new THREE.Scene();
+  const gui = new GUI()
   // an array of objects whose rotation to update
   const objects = [];
 
@@ -48,6 +91,7 @@ function main() {
   const sunMesh = new THREE.Mesh(sphereGeometry, sunMaterial);
   sunMesh.scale.set(5, 5, 5);  // make the sun large
   solarSystem.add(sunMesh);
+  objects.push(sunMesh);
 
 
   /****************** TIERRA *********************************************/
@@ -56,20 +100,47 @@ function main() {
   solarSystem.add(earthOrbit);
   objects.push(earthOrbit);  
 
-  const earthMaterial = new THREE.MeshPhongMaterial({color: 0x2233FF, emissive: 0x112244});
+  const earthMaterial = new THREE.MeshPhongMaterial({color: 0x2233FF});
   const earthMesh = new THREE.Mesh(sphereGeometry, earthMaterial);
   earthOrbit.add(earthMesh);
+  objects.push(earthMesh)
 
   /******************** LUNA ***********************************************/
   const moonOrbit = new THREE.Object3D();
   moonOrbit.position.x = 2;
   earthOrbit.add(moonOrbit);
-  //objects.push(moonOrbit);
 
-  const moonMaterial = new THREE.MeshPhongMaterial({color: 0x888888, emissive: 0x222222});
+  const moonMaterial = new THREE.MeshPhongMaterial({color: 0x888888});
   const moonMesh = new THREE.Mesh(sphereGeometry, moonMaterial);
   moonMesh.scale.set(.5, .5, .5);
   moonOrbit.add(moonMesh);
+  objects.push(moonMesh);
+
+  /****************** SATURNO *********************************************/
+  const saturnOrbit = new THREE.Object3D();
+  saturnOrbit.position.x = 14;
+  solarSystem.add(saturnOrbit);
+  objects.push(saturnOrbit);  
+
+  const saturnMaterial = new THREE.MeshPhongMaterial({color: 0x448866});
+  const saturnMesh = new THREE.Mesh(sphereGeometry, saturnMaterial);
+  saturnOrbit.add(saturnMesh);
+  objects.push(saturnMesh)
+
+  /******************** ANILLO ***********************************************/
+  const ringOrbit = new THREE.Object3D();
+  saturnOrbit.add(ringOrbit);
+
+  const ringMaterial = new THREE.MeshPhongMaterial({color: 0x888888});
+  const innerRadius = 2;  // ui: innerRadius
+  const outerRadius = 4;  // ui: outerRadius
+  const thetaSegments = 18;  // ui: thetaSegments
+  const ringGeometry = new THREE.RingGeometry(innerRadius, outerRadius, thetaSegments);
+  const ringMesh = new THREE.Mesh(ringGeometry, ringMaterial);
+  //ringMesh.scale.set(.5, .5, .5);
+  ringOrbit.add(ringMesh);
+  //objects.push(ringMesh);
+
 
   /******************* LUZ **************************************************/
   {
@@ -88,6 +159,34 @@ function main() {
   camera.position.set(0, 50, 0);
   camera.up.set(0, 0, 1);
   camera.lookAt(0, 0, 0);
+
+  function makeAxisGrid(node, label, units) {
+    const helper = new AxisGridHelper(node, units);
+    gui.add(helper, 'visible').name(label);
+  }
+  makeAxisGrid(solarSystem, 'solarSystem', 25);
+  makeAxisGrid(sunMesh, 'sunMesh');
+  makeAxisGrid(earthOrbit, 'earthOrbit');
+  makeAxisGrid(earthMesh, 'earthMesh');
+  makeAxisGrid(moonOrbit, 'moonOrbit');
+  makeAxisGrid(moonMesh, 'moonMesh');    
+  makeAxisGrid(saturnOrbit, 'saturnOrbit');
+  makeAxisGrid(saturnMesh, 'saturnMesh');    
+
+  /*********************** ORBIT CONTROLS *********************/
+  const controls = new OrbitControls(camera, canvas);
+  controls.target.set(0, 5, 0);
+  controls.update();
+
+  /******************* LUZ AMBIENTE **********************************/
+  {
+    const color = 0xFFFFFF;
+    const intensity = 0.4;
+    const light = new THREE.AmbientLight(color, intensity);
+    scene.add(light);
+    gui.addColor(new ColorGUIHelper(light, 'color'), 'value').name('color');
+    gui.add(light, 'intensity', 0, 2, 0.01);
+  }
 
   function render(time) {
     time *= 0.001;  // convert time to seconds

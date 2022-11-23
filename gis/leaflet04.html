@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<!-- https://gist.github.com/sigdeletras/3888de4540dfc1d47682f1cb78765e18 -->
+<html>
+<head>
+	<title>Leaflet GeoJSON Example</title>
+	<meta charset="utf-8" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="lib/leaflet.css"/>
+    <script src="lib/leaflet.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script> 
+	<style type="text/css">
+	    .leaflet-map-pane {
+    z-index: 1 !important;
+}
+
+.leaflet-google-layer {
+    z-index: 0 !important;
+}
+		</style>
+
+</head>
+<body>
+	<div id="map" style="width: 600px; height: 400px"></div>
+
+
+	<script>
+
+var map = L.map('map').setView([36.65051708060764, -4.340629577636719], 12); // Málaga
+
+var osmLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap<\/a> contributors'
+}).addTo(map);
+
+function popUpInfo(feature, layer) {
+    // does this feature have a property named popupContent?
+    if (feature.properties && feature.properties.tipo) {
+        layer.bindPopup(feature.properties.tipo);
+    }
+}
+
+
+var geojsonFeaturePoint = {
+	"type": "Feature",
+	"properties": {
+		"tipo": "Museo Picasso Málaga"
+	},
+	"geometry": {
+		"type": "Point",
+		"coordinates": [-4.411354064941406, 36.652445170907015 ]
+	}
+};
+
+var point = new L.geoJson(geojsonFeaturePoint, {
+    onEachFeature: popUpInfo // Llamma la función popUpInfo para presentar los datos de tipo
+}).addTo(map);
+
+/// ---- Línea  ----
+var geojsonFeatureLine = [
+  {
+    "type": "Feature",
+    "properties": {
+      "tipo": "Línea"
+    },
+    "geometry": {
+      "type": "LineString",
+      "coordinates": [
+        [
+          -4.388694763183594,
+          36.660157049319785
+        ],
+        [
+          -4.375648498535156,
+          36.64528344930188
+        ],
+        [
+          -4.357452392578125,
+          36.66070786821854
+        ],
+        [
+          -4.3512725830078125,
+          36.64528344930188
+        ]
+      ]
+    }
+  }
+];
+
+
+
+var line = new L.geoJson(geojsonFeatureLine).addTo(map);
+
+/// ---- Polígono  ----
+
+var geojsonFeaturePolygon = [
+  {
+    "type": "Feature",
+    "properties": {
+        "tipo": "Polígono"
+    },
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            -4.339256286621094,
+            36.660157049319785
+          ],
+          [
+            -4.28192138671875,
+            36.66070786821854
+          ],
+          [
+            -4.2826080322265625,
+            36.63894752503843
+          ],
+          [
+            -4.304237365722656,
+            36.64748712688497
+          ],
+          [
+            -4.319343566894531,
+            36.63949849566231
+          ],
+          [
+            -4.34131622314453,
+            36.64583437460881
+          ],
+          [
+            -4.339256286621094,
+            36.660157049319785
+          ]
+        ]
+      ]
+    }
+  }
+];
+
+
+var polygon = new L.geoJson(geojsonFeaturePolygon,{
+		color: 'red',
+		fillColor: '#f03',
+		fillOpacity: 0.5,
+		radius: 500
+	}).addTo(map);
+	</script>
+</body>
+</html>

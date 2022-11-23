@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet GeoJSON Example</title>
+	<meta charset="utf-8" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="lib/leaflet.css"/>
+    <script src="lib/leaflet.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script> 
+	<script src="http://1maps.googleapis.com/maps/api/js?sensor=false&libraries=drawing" type="text/javascript"></script> 
+	<script src="http://1matchingnotes.com/javascripts/leaflet-google.js"></script>
+	<style type="text/css">
+	    .leaflet-map-pane {
+            z-index: 1 !important;
+        }
+
+        .leaflet-google-layer {
+            z-index: 0 !important;
+        }
+	</style>
+
+</head>
+<body>
+	<div id="map" style="width: 800px; height: 600px"></div>
+
+	<script>
+
+		var map = L.map('map');
+
+		var hospitals =[
+            {
+                "type": "Feature",
+                "properties": {
+                    "Name": "Khoo Teck Puat Hospital",
+                    "Status": "Operational"
+                },
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [103.8384,1.424034]
+                }
+            },
+            {
+                "type": "Feature",
+                "properties": {
+                    "Name": "Yishun Community Hospital",
+                    "popupContent": "Addtional info here...",
+                    "Status": "Operational"
+                },
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [103.837783,1.4237883]
+                }
+            }
+            ,
+            {
+                "type": "Feature",
+                "properties": {
+                    "Name": "Woodlands Medical Centre",
+                    "Status": "Operational"
+                },
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [103.772335,1.4463388]
+                }
+            }
+            ,
+            {
+                "type": "Feature",
+                "properties": {
+                    "Name": "Singapore General Hospital",
+                    "Status": "Operational"
+                },
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [103.836171,1.282769]
+                }
+            }
+            ,
+            {
+                "type": "Feature",
+                "properties": {
+                    "Name": "KK Women's and Children's Hospital",
+                    "Status": "Operational"
+                },
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [103.846944,1.310556]
+                }
+            }
+            ,
+            {
+                "type": "Feature",
+                "properties": {
+                    "Name": "Tan Tock Seng Hospital",
+                    "Status": "Operational"
+                },
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [103.845944,1.321611]
+                }
+            }
+            ,
+            {
+                "type": "Feature",
+                "properties": {
+                    "Name": "Institute of Mental Health",
+                    "Status": "Operational"
+                },
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [103.881667,1.378333]
+                }
+            }
+            ,
+            {
+                "type": "Feature",
+                "properties": {
+                    "Name": "The Salvation Army Peacehaven Nursing Home",
+                    "Status": "Operational"
+                },
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [103.9616977,1.3538414]
+                }
+            }
+            ,
+            {
+                "type": "Feature",
+                "properties": {
+                    "Name": "National University Hospital",
+                    "Status": "Operational"
+                },
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [103.7828,1.2951]
+                }
+            }
+        ];
+
+
+	function procesarElemento(feature, layer) {
+			var popupContent = "<p> "+feature.properties.Name + "</p>";
+
+            //Verificar si el feature no tiene un popupContent propio a parte del "Name"
+			if (feature.properties && feature.properties.popupContent) {
+				popupContent += feature.properties.popupContent;
+			}
+
+			layer.bindPopup(popupContent);
+		}
+
+
+	map.setView([1.3571318,103.8080804], 11);
+
+	 mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+	 L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        {
+            attribution: '&copy; ' + mapLink + ' Contributors',
+			maxZoom: 18,
+		}).addTo(map);
+
+	  L.geoJson(hospitals,{onEachFeature: procesarElemento}).addTo(map);
+
+
+	</script>
+</body>
+</html>

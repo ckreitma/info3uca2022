@@ -1,0 +1,69 @@
+<!-- https://leafletjs.com/examples/quick-start/example-basic.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<base target="_top">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<title>LeafLet 02</title>
+	
+	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+
+    <link rel="stylesheet" href="lib/leaflet.css"/>
+    <script src="lib/leaflet.js"></script>
+
+	<style>
+		html, body {
+			height: 100%;
+			margin: 0;
+		}
+		.leaflet-container {
+			height: 600px;
+			width: 800px;
+			max-width: 100%;
+			max-height: 100%;
+		}
+	</style>
+
+	
+</head>
+<body>
+
+
+
+<div id="map" style="width: 800px; height: 600px;"></div>
+<script>
+
+	const map = L.map('map').setView([-25.29332686261743, -57.64640178970182], 13);
+
+	const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		maxZoom: 19,
+		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+	}).addTo(map);
+
+	//Marca en mapa
+	const marker = L.marker([-25.30, -57.65]).addTo(map);
+
+	marker.bindPopup("<b>Baratote</b><br>Pasar antes de ver el partido").openPopup();
+
+	//Círculo en el mapa
+	const circle = L.circle([-25.31, -57.63], {
+		color: 'red',
+		fillColor: '#f03',
+		fillOpacity: 0.5,
+		radius: 500
+	}).addTo(map);
+
+	const polygon = L.polygon([
+		[-25.20, -57.66],
+		[-25.32, -57.68],
+		[-25.19, -57.48]
+	]).addTo(map);
+
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!-- https://leafletjs.com/examples/quick-start/example-basic.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<base target="_top">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>JsVectorMap 1</title>
+
+	<script src='https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.js'></script>
+	<link href='https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.css' rel='stylesheet' />
+</head>
+<body>
+    <div id="map" style="width: 800px; height: 600px;"></div>
+
+    <script>
+		mapboxgl.accessToken = 'pk.eyJ1IjoiY2tyZWl0bWEiLCJhIjoiY2t2em00aHBhOWs2eDMwcXBwdm9ibWdieiJ9.qREj0KhUapgWQ_i_3aVVQA';
+		const map = new mapboxgl.Map({
+		container: 'map', // container ID
+		style: 'mapbox://styles/mapbox/navigation-night-v1', // style URL
+		center: [-56.87,-23.99], // starting position [lng, lat]
+		zoom: 9, // starting zoom, 
+		});
+	</script>
+</body>
+</html>
